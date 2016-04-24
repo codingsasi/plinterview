@@ -1,0 +1,88 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Plog</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+<link rel="stylesheet" href="{% static 'plinterview/style.css' %}" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="{% static 'plinterview/script.js' %}"></script>
+</head>
+
+<body>
+  <div class="header row">
+    <div class="twelve columns">
+      <a href="/interview" class="two columns"><div class="header-tile">Plinterview</div></a>
+      <a href="/interview/vote" class="two columns"><div class="header-tile">Vote</div></a>
+      <a href="/interview/list" class="two columns"><div class="header-tile">List</div></a>
+      <a href="/interview" class="two columns"><div class="header-tile">Rankings</div></a>
+      {% if not request.user.id %}
+      <a href="javascript:void(0);" class="two columns right" id="login">
+        <div class="header-tile">Login</div>
+      </a>
+      {% else %}
+      <a href="javascript:void(0);" class="two columns right" id="username" style="margin-left:0;">
+        <div class="header-tile">{{ request.user.username }}</div>
+      </a>
+      <a href="{% url 'logout' %}" class="two columns right" id="logout">
+        <div class="header-tile">Logout</div>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="content container">
+    <div class="row">
+      <div>
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</body>
+{% block login %}
+<center class="login-popup hidden" id="login-popup">
+  <a href="javascript:void(0);" id="close-login-popup"><span class="cross">X</span> Close</a>
+  <div class="login-block twelve columns">
+    <form id="login-form" action="{% url 'login' %}" method="POST" novalidate>{% csrf_token %}
+      <div class="login-inner one-half column">
+        <div class="row">
+          <input type="text" name="username" placeholder="User Name" class="eight columns">
+        </div>
+        <div class="row">
+          <input type="password" name="password" placeholder="Password" class="eight columns">
+        </div>
+        <div class="row">
+          <a href="/accounts/google/login/?process=login" name="google-login" class="button submit six columns" style="margin-left: 8%">Login with Google</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</center>
+{% endblock %}
+{% block signup %}
+<center class="signup-popup hidden" id="signup-popup">
+  <a href="javascript:void(0);" id="close-signup-popup"><span class="cross">X</span> Close</a>
+  <div class="signup-block twelve columns">
+    <form id="signup-form" action="{% url 'signup' %}" method="POST" novalidate>{% csrf_token %}
+      <div class="signup-inner one-half column">
+        <div class="row">
+          <input type="text" name="username" placeholder="User Name" class="eight columns">
+        </div>
+        <div class="row">
+          <input type="email" name="email" placeholder="E-mail" class="eight columns">
+        </div>
+        <div class="row">
+          <input type="password" name="password" placeholder="Password" class="eight columns">
+        </div>
+        <div class="row">
+          <input type="submit" name="login" value="Login" class="button submit two columns">
+        </div>
+      </div>
+    </form>
+  </div>
+</center>
+{% endblock %}
+</html>

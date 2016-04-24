@@ -1,0 +1,78 @@
+{% extends 'plinterview/base.html' %}
+
+{% block content %}
+  <div class="content">
+
+    {% if not request.user.id %}
+    <div class="homepage-banner">
+      <!-- RIBBON 1 -->
+      <div class="banner one">
+
+        <div class="bk l">
+          <div class="arrow top"></div>
+          <div class="arrow bottom"></div>
+        </div>
+
+        <div class="skew l"></div>
+
+        <div class="main">
+          <center><div>LOGIN TO VIEW RESULTS</div></center>
+        </div>
+
+        <div class="skew r"></div>
+
+        <div class="bk r">
+          <div class="arrow top"></div>
+          <div class="arrow bottom"></div>
+        </div>
+
+      </div>
+    </div>
+    {% else %}
+    <div class="content container">
+      {% if excluded_ids %}
+        <h5>You can view the Ranks after you've completed rating all the candidates.</h5>
+      {% else %}
+        <h5>Top Ranking Candidates: </h5>
+      {% endif %}
+      <div>
+        <table>
+          <thead>
+            <th>Rank</th>
+            <th>Candidate ID</th>
+            <th>Candidate</th>
+            <th>Average</th>
+          </thead>
+          <tr>
+          </tr>
+          {% if candidates %}
+            {% for candidate in candidates %}
+              <tr>
+                {% if excluded_ids %}
+                  <td><strong>#</strong></td>
+                {% else %}
+                  <td><strong>{{ forloop.counter }}</strong></td>
+                {% endif %}
+                <td><strong>{{ candidate.id }}</strong></td>
+                <td><strong>{{ candidate.name }}</strong></td>
+                {% if candidate.id in excluded_ids %}
+                  <td>Rate this candidate</td>
+                {% else %}
+                {% if excluded_ids %}
+                  <td><strong>#</strong></td>
+                {% else %}
+                  <td><strong>{{ candidate.rank }}</strong></td>
+                {% endif %}
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </table>
+        {% if excluded_ids %}
+          <td><strong>You can view the Ranks after you've completed rating all the candidates.</strong></td>
+        {% endif %}
+        </div>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}

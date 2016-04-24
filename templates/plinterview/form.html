@@ -1,0 +1,44 @@
+{% extends 'plinterview/base.html' %}
+
+{% block content %}
+  <div class="content container">
+    {% if rates %}
+      {% for rate in rates %}
+      <div class="tile">
+        <strong>{{ rate.candidate }}</strong> : {{ rate.rate }}
+      </div>
+      {% endfor %}
+    {% endif %}
+    <form id="vote-form" action="{% url 'vote' %}" method="POST">{% csrf_token %}
+      <div class="vote-inner twelve column">
+        <div class="row ui-widget">
+          <input type="text" id="candidate" name="candidate" placeholder="Name of Candidate" class="eight columns" required>
+        </div>
+        <br>
+        <div class="row">
+          <div class="twelve columns">
+            <div class="two columns vote-button">
+              <input type="radio" name="vote" value="1" required> 1
+            </div>
+            <div class="two columns vote-button">
+              <input type="radio" name="vote" value="2"> 2
+            </div>
+            <div class="two columns vote-button">
+              <input type="radio" name="vote" value="3"> 3
+            </div>
+            <div class="two columns vote-button">
+              <input type="radio" name="vote" value="4"> 4
+            </div>
+            <div class="two columns vote-button">
+              <input type="radio" name="vote" value="5"> 5
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <input type="submit" name="submit" value="Vote" class="button submit six columns">
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
